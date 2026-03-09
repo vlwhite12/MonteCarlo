@@ -1,0 +1,125 @@
+.results h2 {
+  font-size: 1.1rem;
+  color: #ccc;
+  margin-bottom: 8px;
+}
+
+.hand-label {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 16px;
+}
+
+.prob-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.prob-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.prob-label {
+  width: 40px;
+  font-size: 0.85rem;
+  color: #aaa;
+  text-align: right;
+}
+
+.bar-track {
+  flex: 1;
+  height: 20px;
+  background: #1a1a3e;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+
+.bar-win {
+  background: #2d6a4f;
+}
+
+.bar-tie {
+  background: #b8860b;
+}
+
+.bar-loss {
+  background: #8b3a3a;
+}
+
+.prob-value {
+  width: 52px;
+  text-align: right;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ddd;
+}
+
+.equity-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid #2a2a4a;
+  font-size: 0.95rem;
+  color: #aaa;
+}
+
+.equity-value {
+  font-weight: 700;
+  color: #fff;
+}
+
+.recommendation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.rec-label {
+  color: #aaa;
+}
+
+.rec-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.recommendation.raise {
+  background: #1a3d2e;
+  border: 1px solid #2d6a4f;
+}
+
+.recommendation.raise .rec-value {
+  color: #52c77e;
+}
+
+.recommendation.call {
+  background: #3d3520;
+  border: 1px solid #b8860b;
+}
+
+.recommendation.call .rec-value {
+  color: #daa520;
+}
+
+.recommendation.fold {
+  background: #3d1c1c;
+  border: 1px solid #8b3a3a;
+}
+
+.recommendation.fold .rec-value {
+  color: #e57373;
+}
