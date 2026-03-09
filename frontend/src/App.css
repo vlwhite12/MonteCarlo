@@ -6,20 +6,23 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #1a1a2e;
+  background: #0d0d1a;
   color: #e0e0e0;
   min-height: 100vh;
 }
 
 .app {
-  max-width: 800px;
+  max-width: 860px;
   margin: 0 auto;
   padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-header {
   text-align: center;
-  padding: 30px 0 20px;
+  padding: 24px 0 12px;
 }
 
 .app-header h1 {
@@ -29,14 +32,57 @@ body {
 }
 
 .subtitle {
-  color: #888;
-  font-size: 0.9rem;
+  color: #666;
+  font-size: 0.82rem;
 }
+
+/* ── Tab Navigation ─────────────────────────────── */
+
+.tab-nav {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #2a2a4a;
+  padding-bottom: 0;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  background: transparent;
+  color: #888;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  color: #ccc;
+}
+
+.tab-btn.active {
+  color: #52c77e;
+  border-bottom-color: #52c77e;
+}
+
+/* ── Main & Sections ────────────────────────────── */
 
 .app-main {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
+  flex: 1;
+}
+
+.tab-content {
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .input-section {
@@ -70,7 +116,7 @@ body {
 }
 
 .opponents-section {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .opponents-section > label {
@@ -107,6 +153,116 @@ body {
   color: #fff;
 }
 
+/* ── Simulations Selector ───────────────────────── */
+
+.sims-section {
+  margin-bottom: 16px;
+}
+
+.sims-section > label {
+  display: block;
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.sims-selector {
+  display: flex;
+  gap: 6px;
+}
+
+.sim-btn {
+  padding: 8px 14px;
+  border: 1px solid #3a3a5a;
+  border-radius: 8px;
+  background: #1a1a3e;
+  color: #ccc;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.sim-btn:hover {
+  border-color: #5a5a8a;
+}
+
+.sim-btn.active {
+  background: #1a3d5c;
+  border-color: #2980b9;
+  color: #fff;
+}
+
+/* ── Calculate Button ───────────────────────────── */
+
+.sizing-inputs {
+  margin-bottom: 16px;
+}
+
+.sizing-inputs h2 {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 2px;
+}
+
+.sizing-hint {
+  font-size: 0.75rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.sizing-row {
+  display: flex;
+  gap: 16px;
+}
+
+.sizing-field {
+  flex: 1;
+}
+
+.sizing-field label {
+  display: block;
+  font-size: 0.82rem;
+  color: #999;
+  margin-bottom: 6px;
+}
+
+.input-wrap {
+  display: flex;
+  align-items: center;
+  background: #1a1a3e;
+  border: 1px solid #3a3a5a;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.input-wrap:focus-within {
+  border-color: #5a5a8a;
+}
+
+.input-prefix {
+  padding: 0 8px 0 12px;
+  color: #666;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+.input-wrap input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 10px 12px 10px 0;
+  color: #e0e0e0;
+  font-size: 0.92rem;
+  font-family: inherit;
+  min-width: 0;
+}
+
+.input-wrap input::placeholder {
+  color: #555;
+}
+
 .calculate-btn {
   width: 100%;
   padding: 14px;
@@ -140,9 +296,47 @@ body {
   font-size: 0.9rem;
 }
 
+/* ── Results & Breakdown Sections ───────────────── */
+
 .results-section {
   background: #16213e;
   border-radius: 12px;
   padding: 24px;
   border: 1px solid #2a2a4a;
+}
+
+.breakdown-section {
+  animation: fadeIn 0.3s ease;
+}
+
+/* ── Footer ─────────────────────────────────────── */
+
+.app-footer {
+  text-align: center;
+  padding: 24px 0 12px;
+  margin-top: auto;
+}
+
+.app-footer p {
+  color: #444;
+  font-size: 0.72rem;
+}
+
+/* ── Responsive ─────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .card-pickers {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tab-nav {
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+  .sims-selector {
+    flex-wrap: wrap;
+  }
 }

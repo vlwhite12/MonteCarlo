@@ -1,9 +1,11 @@
 """
 Core Monte Carlo simulation engine for Texas Hold'em equity calculation.
 Uses NumPy for bulk random dealing and pure-Python for fast hand evaluation.
+Supports pre-flop, flop, turn, and river scenarios with community cards.
 """
 
 import numpy as np
+from itertools import combinations
 
 # Card encoding: 0-51
 # rank = card >> 2  (0=2, 1=3, ..., 8=T, 9=J, 10=Q, 11=K, 12=A)
@@ -11,6 +13,12 @@ import numpy as np
 
 RANK_NAMES = "23456789TJQKA"
 SUIT_NAMES = "cdhs"
+
+HAND_CATEGORIES = [
+    "High Card", "One Pair", "Two Pair", "Three of a Kind",
+    "Straight", "Flush", "Full House", "Four of a Kind", "Straight Flush",
+    "Royal Flush"
+]
 
 
 def card_to_int(card_str: str) -> int:
@@ -23,6 +31,11 @@ def card_to_int(card_str: str) -> int:
 def int_to_card(card_int: int) -> str:
     """Convert an integer 0-51 back to a card string."""
     return RANK_NAMES[card_int // 4] + SUIT_NAMES[card_int % 4]
+
+
+def cards_to_ints(card_strs: list[str]) -> list[int]:
+    """Convert a list of card strings to integers."""
+    return [card_to_int(c) for c in card_strs]
 
 
 def _find_straight_rc(rc):
@@ -154,34 +167,45 @@ def eval_7(cards):
     return (0, singles[0], singles[1], singles[2], singles[3], singles[4])
 
 
-def run_simulation(hole_cards: list[int], num_opponents: int, num_simulations: int, seed: int = None) -> dict:
+def run_simulation(hole_cards: list[int], num_opponents: int, num_simulations: int,
+                    community_cards: list[int] = None, seed: int = None) -> dict:
     """
     Run Monte Carlo simulations for Texas Hold'em equity.
 
-    Uses NumPy for bulk random dealing and pure-Python for hand evaluation.
+    Supports any board state: pre-flop (0 community), flop (3), turn (4), river (5).
 
     Args:
         hole_cards: list of 2 ints (0-51) representing the player's hole cards
         num_opponents: number of opponents (1-9)
         num_simulations: how many hands to simulate
+        community_cards: optional list of 0, 3, 4, or 5 known community cards
         seed: optional RNG seed for reproducibility
 
     Returns:
-        dict with 'wins', 'ties', 'losses', 'total' counts
+        dict with wins/ties/losses/total counts and hand_categories breakdown
     """
+    if community_cards is None:
+        community_cards = []
+
     rng = np.random.default_rng(seed)
-    deck = np.array([c for c in range(52) if c not in hole_cards], dtype=np.int32)
+    dead_cards = set(hole_cards) | set(community_cards)
+    deck = np.array([c for c in range(52) if c not in dead_cards], dtype=np.int32)
     deck_size = len(deck)
 
     wins = 0
     ties = 0
     losses = 0
 
-    cards_needed = 5 + num_opponents * 2  # 5 community + 2 per opponent
+    # Track what hand category the hero makes
+    hand_categories = [0] * 10  # indexed by category 0-9 (9 = Royal Flush)
+
+    community_needed = 5 - len(community_cards)
+    cards_needed = community_needed + num_opponents * 2
     h0, h1 = hole_cards[0], hole_cards[1]
+    fixed_community = tuple(community_cards)
+    num_fixed = len(fixed_community)
 
     # Pre-generate all random indices in bulk for speed
-    # Use Fisher-Yates partial shuffle via numpy
     all_deals = np.empty((num_simulations, cards_needed), dtype=np.int32)
     for i in range(num_simulations):
         all_deals[i] = rng.choice(deck_size, size=cards_needed, replace=False)
@@ -192,15 +216,32 @@ def run_simulation(hole_cards: list[int], num_opponents: int, num_simulations: i
         deal_idx = all_deals[i]
         dealt = [deck_list[j] for j in deal_idx]
 
-        c0, c1, c2, c3, c4 = dealt[0], dealt[1], dealt[2], dealt[3], dealt[4]
+        # Build full 5-card community
+        if num_fixed == 0:
+            c0, c1, c2, c3, c4 = dealt[0], dealt[1], dealt[2], dealt[3], dealt[4]
+        elif num_fixed == 3:
+            c0, c1, c2 = fixed_community[0], fixed_community[1], fixed_community[2]
+            c3, c4 = dealt[0], dealt[1]
+        elif num_fixed == 4:
+            c0, c1, c2, c3 = fixed_community[0], fixed_community[1], fixed_community[2], fixed_community[3]
+            c4 = dealt[0]
+        else:  # 5
+            c0, c1, c2, c3, c4 = fixed_community
 
-        # Evaluate hero: hole cards + 5 community
+        # Evaluate hero
         hero_score = eval_7((h0, h1, c0, c1, c2, c3, c4))
+        cat_idx = hero_score[0]
+        # Royal flush = straight flush (8) with ace-high (12)
+        if cat_idx == 8 and hero_score[1] == 12:
+            hand_categories[9] += 1
+        else:
+            hand_categories[cat_idx] += 1
 
         # Evaluate opponents
         best_villain = (-1,)
+        opp_base = community_needed
         for opp in range(num_opponents):
-            base = 5 + opp * 2
+            base = opp_base + opp * 2
             opp_score = eval_7((dealt[base], dealt[base + 1], c0, c1, c2, c3, c4))
             if opp_score > best_villain:
                 best_villain = opp_score
@@ -212,4 +253,10 @@ def run_simulation(hole_cards: list[int], num_opponents: int, num_simulations: i
         else:
             losses += 1
 
-    return {"wins": wins, "ties": ties, "losses": losses, "total": num_simulations}
+    return {
+        "wins": wins,
+        "ties": ties,
+        "losses": losses,
+        "total": num_simulations,
+        "hand_categories": hand_categories,
+    }

@@ -1,13 +1,127 @@
 .results h2 {
   font-size: 1.1rem;
   color: #ccc;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
-.hand-label {
+/* ── Meta row (cards + sims + street) ─────────── */
+
+.result-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #2a2a4a;
+}
+
+.meta-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-hand {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.res-card {
+  display: inline-flex;
+  align-items: center;
+  background: #1a1a3e;
+  border: 1px solid #3a3a5a;
+  border-radius: 4px;
+  padding: 2px 5px;
+  font-weight: 700;
+}
+
+.res-rank {
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+.res-suit {
   font-size: 0.85rem;
-  color: #888;
-  margin-bottom: 16px;
+  margin-left: 1px;
+}
+
+.meta-divider {
+  color: #555;
+  margin: 0 4px;
+}
+
+.meta-info {
+  font-size: 0.78rem;
+  color: #777;
+}
+
+.street-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: #1a3d5c;
+  color: #5dade2;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Hand info row ────────────────────────────── */
+
+.hand-info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.hand-name-tag {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #ccc;
+  background: #222244;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.sklansky-tag {
+  font-size: 0.72rem;
+  color: #aaa;
+  background: #1a1a3e;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.tier-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.tier-premium {
+  background: rgba(82, 199, 126, 0.15);
+  color: #52c77e;
+}
+.tier-strong {
+  background: rgba(139, 195, 74, 0.15);
+  color: #8bc34a;
+}
+.tier-playable {
+  background: rgba(218, 165, 32, 0.15);
+  color: #daa520;
+}
+.tier-marginal {
+  background: rgba(205, 133, 63, 0.15);
+  color: #cd853f;
+}
+.tier-trash {
+  background: rgba(119, 119, 119, 0.15);
+  color: #777;
 }
 
 .prob-bars {
@@ -122,4 +236,201 @@
 
 .recommendation.fold .rec-value {
   color: #e57373;
+}
+
+/* ── Raise Sizing ────────────────────────────── */
+
+.raise-sizing {
+  margin-top: 16px;
+  padding: 16px;
+  background: #12122a;
+  border: 1px solid #2a2a4a;
+  border-radius: 10px;
+}
+
+.raise-sizing h3 {
+  font-size: 0.95rem;
+  color: #ccc;
+  margin: 0 0 12px 0;
+}
+
+.sizing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.sizing-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sizing-key {
+  font-size: 0.7rem;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sizing-val {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #e0e0e0;
+}
+
+.action-item .sizing-val {
+  font-size: 1.1rem;
+}
+
+.action-raise {
+  color: #52c77e;
+}
+
+.action-all-in {
+  color: #e74c3c;
+}
+
+.action-check {
+  color: #daa520;
+}
+
+.sizing-reasoning {
+  font-size: 0.82rem;
+  color: #aaa;
+  padding-top: 10px;
+  border-top: 1px solid #2a2a4a;
+  line-height: 1.4;
+}
+
+/* ── Pro Strategy Section ─────────────────────────────── */
+
+.strategy-section {
+  margin-top: 18px;
+  padding: 16px;
+  background: #1a1a2e;
+  border-radius: 10px;
+  border: 1px solid #2a2a4a;
+}
+
+.strategy-section h3 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  color: #e0e0e0;
+}
+
+.strategy-section h4 {
+  margin: 14px 0 8px;
+  font-size: 0.95rem;
+  color: #ccc;
+  border-bottom: 1px solid #2a2a4a;
+  padding-bottom: 4px;
+}
+
+/* Primary action banner */
+.strategy-primary {
+  padding: 12px;
+  border-radius: 8px;
+  background: #22224a;
+  border-left: 4px solid #888;
+}
+
+.strategy-primary.action-check-raise  { border-left-color: #e74c3c; }
+.strategy-primary.action-slow-play    { border-left-color: #9b59b6; }
+.strategy-primary.action-semi-bluff   { border-left-color: #e67e22; }
+.strategy-primary.action-bluff        { border-left-color: #e74c3c; }
+.strategy-primary.action-value-bet    { border-left-color: #52c77e; }
+.strategy-primary.action-bet          { border-left-color: #52c77e; }
+.strategy-primary.action-raise        { border-left-color: #52c77e; }
+.strategy-primary.action-call         { border-left-color: #daa520; }
+.strategy-primary.action-pot-control  { border-left-color: #3498db; }
+.strategy-primary.action-check-fold   { border-left-color: #888; }
+.strategy-primary.action-fold         { border-left-color: #555; }
+.strategy-primary.action-probe        { border-left-color: #3498db; }
+
+.strategy-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.strategy-explanation {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #bbb;
+  line-height: 1.5;
+}
+
+/* Advanced play cards */
+.strategy-plays {
+  margin-top: 4px;
+}
+
+.play-card {
+  background: #22224a;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: 1px solid #2a2a4a;
+  transition: border-color 0.2s;
+}
+
+.play-card:hover {
+  border-color: #3a3a6a;
+}
+
+.play-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.play-icon {
+  font-size: 1.2rem;
+}
+
+.play-name {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #e0e0e0;
+}
+
+.play-desc {
+  margin: 0 0 6px;
+  font-size: 0.84rem;
+  color: #bbb;
+  line-height: 1.45;
+}
+
+.play-when {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #999;
+  line-height: 1.4;
+}
+
+.play-when strong {
+  color: #aaa;
+}
+
+/* Tips */
+.strategy-tips {
+  margin-top: 4px;
+}
+
+.tip-item {
+  padding: 8px 10px;
+  background: #22224a;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 0.84rem;
+  color: #bbb;
+  line-height: 1.45;
+  border-left: 3px solid #3498db;
 }

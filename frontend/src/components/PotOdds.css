@@ -1,0 +1,154 @@
+.pot-odds {
+  margin-top: 20px;
+}
+
+.pot-odds h3 {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 2px;
+}
+
+.pot-odds-sub {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 14px;
+}
+
+.pot-odds-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pot-input-group label {
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.pot-input-group input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #3a3a5a;
+  border-radius: 6px;
+  background: #1a1a3e;
+  color: #ddd;
+  font-size: 0.95rem;
+}
+
+.pot-input-group input:focus {
+  outline: none;
+  border-color: #5a8aba;
+}
+
+.cards-toggle {
+  display: flex;
+  gap: 4px;
+}
+
+.cards-toggle button {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #3a3a5a;
+  border-radius: 6px;
+  background: #1a1a3e;
+  color: #999;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.cards-toggle button.active {
+  background: #2d6a4f;
+  border-color: #40916c;
+  color: #fff;
+}
+
+.pot-calc-btn {
+  width: 100%;
+  padding: 10px;
+  font-size: 0.95rem;
+  background: #2a4a6a;
+  border: none;
+  border-radius: 8px;
+  color: #ddd;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pot-calc-btn:hover {
+  background: #3a6090;
+}
+
+.pot-error {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #3d1c1c;
+  border: 1px solid #6b2c2c;
+  border-radius: 6px;
+  color: #e57373;
+  font-size: 0.85rem;
+}
+
+.pot-results {
+  margin-top: 14px;
+}
+
+.pot-result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pot-stat {
+  padding: 10px;
+  background: #1a1a3e;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.pot-stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.pot-stat-value {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.pot-stat-value.positive { color: #52c77e; }
+.pot-stat-value.negative { color: #e57373; }
+
+.pot-stat-sub {
+  display: block;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 2px;
+}
+
+.pot-decision {
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.pot-decision.profitable {
+  background: #1a3d2e;
+  border: 1px solid #2d6a4f;
+  color: #52c77e;
+}
+
+.pot-decision.unprofitable {
+  background: #3d1c1c;
+  border: 1px solid #6b2c2c;
+  color: #e57373;
+}

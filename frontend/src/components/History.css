@@ -1,0 +1,140 @@
+.history-panel {
+  background: #1a1a2e;
+  border: 1px solid #2d2d4d;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.history-panel h3 {
+  color: #e0e0e0;
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+}
+
+.history-empty {
+  color: #666;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.history-list::-webkit-scrollbar {
+  width: 5px;
+}
+.history-list::-webkit-scrollbar-track {
+  background: #111;
+}
+.history-list::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+.history-item {
+  background: #16162a;
+  border: 1px solid #2d2d4d;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.history-item:hover {
+  border-color: #4a9eff;
+  background: #1a1e36;
+}
+
+.history-hand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.history-cards {
+  color: #e0e0e0;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.history-board {
+  color: #888;
+  font-size: 0.75rem;
+}
+
+.history-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.history-opponents,
+.history-sims {
+  color: #666;
+  font-size: 0.72rem;
+}
+
+.history-equity {
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-left: auto;
+}
+
+.equity-high {
+  color: #52c77e;
+}
+.equity-mid {
+  color: #daa520;
+}
+.equity-low {
+  color: #e74c3c;
+}
+
+.history-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.history-hand-name {
+  color: #aaa;
+  font-size: 0.72rem;
+}
+
+.history-tier {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.tier-premium {
+  background: rgba(82, 199, 126, 0.15);
+  color: #52c77e;
+}
+.tier-strong {
+  background: rgba(139, 195, 74, 0.15);
+  color: #8bc34a;
+}
+.tier-playable {
+  background: rgba(218, 165, 32, 0.15);
+  color: #daa520;
+}
+.tier-marginal {
+  background: rgba(205, 133, 63, 0.15);
+  color: #cd853f;
+}
+.tier-trash {
+  background: rgba(119, 119, 119, 0.15);
+  color: #777;
+}
