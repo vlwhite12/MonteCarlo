@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(vercel --yes)",
-      "Bash(vercel --yes --name holdem-equity-calculator)"
+      "Bash(vercel --yes --name holdem-equity-calculator)",
+      "Bash(vercel env:*)",
+      "Bash(printf \"3.12\")",
+      "Bash(vercel --yes --prod)"
     ]
   }
 }
