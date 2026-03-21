@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./PreflopChart.css";
 
-const API_URL = "http://localhost:8000/api";
+const API_URL = process.env.REACT_APP_API_URL || "/api";
 
 const TIER_COLORS = {
   premium: { bg: "#1a3d2e", border: "#2d6a4f", color: "#52c77e" },

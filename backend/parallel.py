@@ -1,22 +1,34 @@
 """
 Multiprocessing handler that distributes Monte Carlo simulations across CPU cores.
 Uses a persistent ProcessPoolExecutor to avoid pool creation overhead per request.
+Falls back to single-threaded execution in serverless environments (e.g. Vercel).
 """
 
 import asyncio
-import multiprocessing as mp
 import os
-from concurrent.futures import ProcessPoolExecutor
 from simulation import run_simulation
 
-# Persistent pool — initialized once at import, reused across all requests
-_NUM_WORKERS = min(mp.cpu_count(), 8)
-_pool: ProcessPoolExecutor | None = None
+# Detect serverless environment where multiprocessing is unavailable
+_SERVERLESS = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
+
+_pool = None
+_NUM_WORKERS = 1
+
+if not _SERVERLESS:
+    try:
+        import multiprocessing as mp
+        from concurrent.futures import ProcessPoolExecutor
+        _NUM_WORKERS = min(mp.cpu_count(), 8)
+    except (ImportError, OSError):
+        _SERVERLESS = True
 
 
-def _get_pool() -> ProcessPoolExecutor:
+def _get_pool():
     global _pool
+    if _SERVERLESS:
+        return None
     if _pool is None:
+        from concurrent.futures import ProcessPoolExecutor
         _pool = ProcessPoolExecutor(max_workers=_NUM_WORKERS)
     return _pool
 
@@ -36,6 +48,7 @@ async def run_parallel_simulation(
     """
     Run Monte Carlo simulations in parallel across multiple CPU cores.
     Non-blocking — awaitable from async FastAPI handlers.
+    Falls back to single-threaded execution in serverless environments.
 
     Args:
         hole_cards: list of 2 ints (0-51) for the player's hole cards
@@ -46,26 +59,32 @@ async def run_parallel_simulation(
         dict with win_probability, tie_probability, loss_probability,
         total_simulations, and recommendation
     """
-    pool = _get_pool()
-    num_workers = _NUM_WORKERS
     if community_cards is None:
         community_cards = []
 
-    # Split simulations across workers, each with a unique seed
-    sims_per_worker = num_simulations // num_workers
-    remainder = num_simulations % num_workers
-
     base_seed = int.from_bytes(os.urandom(4), "big")
-    tasks = []
-    loop = asyncio.get_event_loop()
 
-    for i in range(num_workers):
-        worker_sims = sims_per_worker + (1 if i < remainder else 0)
-        seed = base_seed + i
-        args = (hole_cards, num_opponents, worker_sims, community_cards, seed)
-        tasks.append(loop.run_in_executor(pool, _worker, args))
+    if _SERVERLESS:
+        # Single-threaded fallback for serverless
+        results = [run_simulation(hole_cards, num_opponents, num_simulations,
+                                  community_cards=community_cards, seed=base_seed)]
+    else:
+        pool = _get_pool()
+        num_workers = _NUM_WORKERS
 
-    results = await asyncio.gather(*tasks)
+        sims_per_worker = num_simulations // num_workers
+        remainder = num_simulations % num_workers
+
+        tasks = []
+        loop = asyncio.get_event_loop()
+
+        for i in range(num_workers):
+            worker_sims = sims_per_worker + (1 if i < remainder else 0)
+            seed = base_seed + i
+            args = (hole_cards, num_opponents, worker_sims, community_cards, seed)
+            tasks.append(loop.run_in_executor(pool, _worker, args))
+
+        results = await asyncio.gather(*tasks)
 
     # Aggregate results
     total_wins = sum(r["wins"] for r in results)

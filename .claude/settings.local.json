@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(vercel --yes)",
+      "Bash(vercel --yes --name holdem-equity-calculator)"
+    ]
+  }
+}
